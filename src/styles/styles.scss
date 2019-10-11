@@ -1,0 +1,54 @@
+
+.container {
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  background: #f5fcff;
+}
+
+.input {
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 8px;
+  width: 90%;
+  margin-bottom: 10px
+}
+
+.btnText {
+  color: #333;
+  font-size: 20px;
+  background: #f4f4f4;
+  padding: 10px 20px;
+  border-radius: 10px;
+}
+
+.userItem {
+  padding: 10px;
+  border: 1px solid #ccc;
+}
+
+.userName {
+  font-size: 20px;
+}
+
+.formInput {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  width: 100%;
+}
+.inputMess {
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 8px;
+  width: 80%;
+  margin-right: 5px;
+}
+.message {
+  display: flex;
+  flex-direction: row;
+  width: 60%;
+  border-radius: 5px;
+  margin-bottom: 15px;
+}
+
