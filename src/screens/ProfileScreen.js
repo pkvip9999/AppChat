@@ -3,6 +3,7 @@ import {View, Text, TouchableOpacity, Alert, TextInput, AsyncStorage} from "reac
 import style from "../styles/styles.scss"
 import User from "../User";
 import firebaseService from "../../services/firebase";
+import firebase from "firebase";
 
 export default class ProfileScreen extends React.Component {
   static navigationOptions = ({navigation}) => {
@@ -30,9 +31,12 @@ export default class ProfileScreen extends React.Component {
     }
 
   }
-  Logout = async () => {
-    await AsyncStorage.clear()
-    this.props.navigation.navigate("Auth");
+  Logout = () => {
+    firebase.auth().signOut().then(function() {
+      this.props.navigation.navigate('Auth')
+    }).catch((error) => {
+       console.log(error.message)
+    });
   }
   render() {
     return (

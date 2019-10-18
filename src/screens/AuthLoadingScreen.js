@@ -1,6 +1,6 @@
 import React from 'react';
 import User from "../User";
-import firebaseService from "../../services/firebase";
+import styles from "../styles/styles.scss"
 import firebase from "firebase";
 import {
   ActivityIndicator,
@@ -17,18 +17,20 @@ export default class AuthLoadingScreen extends React.Component {
 
   // Fetch the token from storage then navigate to our appropriate place
   _bootstrapAsync = async () => {
-    User.phone = await AsyncStorage.getItem('userPhone');
-
-    // This will switch to the App screen or Auth screen and this loading
-    // screen will be unmounted and thrown away.
-    this.props.navigation.navigate(User.phone ? 'App' : 'Auth');
+    firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        if (!firebase.auth().currentUser.displayName) {
+          this.props.navigation.navigate( 'SignUpSuccess')
+        } else this.props.navigation.navigate('App')
+      } else this.props.navigation.navigate('Auth')
+    })
   };
 
   // Render any loading content that you like here
   render() {
     return (
-      <View>
-        <ActivityIndicator />
+      <View style={styles.container}>
+        <ActivityIndicator size="large" color="#0000ff"/>
         <StatusBar barStyle="default" />
       </View>
     );
