@@ -36,12 +36,7 @@
       ]
     },
     "android": {
-      "package": "thuongdz.com",
-      "publishBundlePath": "android/app/src/main/assets/shell-app.bundle",
-      "publishManifestPath": "android/app/src/main/assets/shell-app-manifest.json"
-    },
-    "isDetached": true,
-    "scheme": "expc15ce7a27e8343c096f504d30a436b35",
-    "description": ""
+      "package": "thuongdz.com"
+    }
   }
 }

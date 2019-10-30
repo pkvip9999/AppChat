@@ -25,12 +25,11 @@ class LoginScreen extends React.Component {
   SignUp = async (email, password) => {
     try {
       if (email == null || password == null) {
-        Alert.alert("Thông báo","Hãy điền tên đăng nhập và mật khẩu")
-
+        Alert.alert("Thông báo", "Hãy điền tên đăng nhập và mật khẩu")
       } else {
-        await firebase.auth().createUserWithEmailAndPassword(email, password).catch((error)=>{
+        await firebase.auth().createUserWithEmailAndPassword(email, password).catch((error) => {
           if (error) {
-            Alert.alert("Đăng ký thất bại",`${error.message}`)
+            Alert.alert("Đăng ký thất bại", `${error.message}`)
           }
         })
       }
@@ -41,9 +40,9 @@ class LoginScreen extends React.Component {
   SignIn = async (email, password) => {
     try {
       if (email == null || password == null) {
-        Alert.alert("Thông báo","Hãy điền tên đăng nhập và mật khẩu")
+        Alert.alert("Thông báo", "Hãy điền tên đăng nhập và mật khẩu")
       } else {
-        await firebase.auth().signInWithEmailAndPassword(email, password).catch((error)=>{
+        await firebase.auth().signInWithEmailAndPassword(email, password).catch((error) => {
           Alert.alert("Đăng nhập thất bại", `${error.message}`)
         });
 
@@ -55,7 +54,9 @@ class LoginScreen extends React.Component {
       console.log(error.toString(error));
     }
   };
+
   render() {
+    console.log("oke")
     return (
       <Container style={styles.container}>
         <Form style={{width: "80%",}}>
@@ -71,7 +72,8 @@ class LoginScreen extends React.Component {
                    onChangeText={password => this.setState({password})}
             />
           </Item>
-          <Button full rounded style={styles.btnLogin} onPress={() => this.SignIn(this.state.email, this.state.password)}>
+          <Button full rounded style={styles.btnLogin}
+                  onPress={() => this.SignIn(this.state.email, this.state.password)}>
             <Text style={{color: "#fff"}}>Đăng nhập</Text>
           </Button>
           <Button full rounded success style={styles.btnSignup}

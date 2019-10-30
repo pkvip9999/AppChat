@@ -1,5 +1,5 @@
 import React from "react";
-import {View, Text, TouchableOpacity, Alert, TextInput, AsyncStorage} from "react-native";
+import {View, Text, TouchableOpacity, Alert, TextInput, AsyncStorage, Image} from "react-native";
 import style from "../styles/styles.scss"
 import User from "../User";
 import firebaseService from "../../services/firebase";
@@ -9,6 +9,13 @@ export default class ProfileScreen extends React.Component {
   static navigationOptions = ({navigation}) => {
     return {
       title: "Profile",
+      headerLeft: () => (
+        <TouchableOpacity onPress={() => navigation.navigate("DrawerNav")}>
+          <Image source={require("../../assets/menu-button-of-three-horizontal-lines.png")}
+                 style={{width: 20, height: 20, marginLeft: 15}}
+          />
+        </TouchableOpacity>
+      )
     }
   }
 

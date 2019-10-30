@@ -3,6 +3,7 @@ import {View, Text, Alert} from "react-native";
 import {Button, Container, Form, Input, Item, Label} from "native-base";
 import styles from "../styles/styles.scss"
 import firebase from "firebase";
+import firebaseService from "../../services/firebase";
 
 export default class SignUpSuccess extends React.Component {
   static navigationOptions = ({navigation}) => {
@@ -19,9 +20,16 @@ export default class SignUpSuccess extends React.Component {
   componentDidMount() {
     Alert.alert("Welcome", "Chào mừng bạn đến với app chat của chúng tôi :))))")
   }
-  updateName = (name) => {
+   updateName = async (name) => {
     if (name) {
-      firebase.auth().currentUser.updateProfile({
+      const user = await firebase.auth().currentUser;
+      await firebaseService.database().ref(`/users/${user.uid}`).update({
+        uid: user.uid,
+        email: user.email,
+        displayName: name,
+        phoneNumber: user.phoneNumber
+      })
+      await firebase.auth().currentUser.updateProfile({
         displayName: name
       }).then(() => {
         this.props.navigation.navigate( 'App')
