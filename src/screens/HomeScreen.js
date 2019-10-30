@@ -9,19 +9,6 @@ import firebase from "../../firebase";
 
 
 export default class HomeScreen extends React.Component {
-  // static navigationOptions = ({navigation}) => {
-  //   return {
-  //     title: "Home",
-  //     headerLeft: () => (
-  //       <TouchableOpacity onPress={() => navigation.navigate("DrawerNav")}>
-  //         <Image source={require("../../assets/menu-button-of-three-horizontal-lines.png")}
-  //                style={{width: 20, height: 20, marginLeft: 15}}
-  //         />
-  //       </TouchableOpacity>
-  //     )
-  //   }
-  // }
-
   constructor(props) {
     super(props);
     this.state = {
@@ -30,9 +17,8 @@ export default class HomeScreen extends React.Component {
   }
   componentWillMount() {
     const user = firebaseService.auth().currentUser;
-    let test = firebaseService.database().ref(`message/${user.uid}`);
-    test.on('child_added', (val) => {
-      console.log(val.key)
+    let data = firebaseService.database().ref(`message/${user.uid}`);
+    data.on('child_added', (val) => {
       let dbRef = firebaseService.database().ref(`users`).orderByChild("uid").equalTo(val.key);
       dbRef.on('child_added', (val) => {
         this.setState((prevState) => {

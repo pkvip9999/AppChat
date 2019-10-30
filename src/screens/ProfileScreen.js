@@ -1,29 +1,27 @@
 import React from "react";
 import {View, Text, TouchableOpacity, Alert, TextInput, AsyncStorage, Image} from "react-native";
 import style from "../styles/styles.scss"
+import {Container, Button, Content, Form, Item, Input, Label} from 'native-base';
 import User from "../User";
 import firebaseService from "../../services/firebase";
 import firebase from "firebase";
 
 export default class ProfileScreen extends React.Component {
-  static navigationOptions = ({navigation}) => {
-    return {
-      title: "Profile",
-      headerLeft: () => (
-        <TouchableOpacity onPress={() => navigation.navigate("DrawerNav")}>
-          <Image source={require("../../assets/menu-button-of-three-horizontal-lines.png")}
-                 style={{width: 20, height: 20, marginLeft: 15}}
-          />
-        </TouchableOpacity>
-      )
-    }
-  }
-
   constructor(props) {
     super(props)
     this.state = {
-      name: User.name
+      name: "",
+      email: ""
     }
+  }
+
+  componentWillMount() {
+    const user = firebaseService.auth().currentUser;
+    console.log(user)
+    this.setState({
+      name: user.displayName,
+      phone: user.phoneNumber
+    })
   }
 
   handleChange = () => {
@@ -31,37 +29,73 @@ export default class ProfileScreen extends React.Component {
       [key]: val
     })
   }
-  changeName = async () => {
-    if (User.name !== this.state.name) {
-      firebaseService.database().ref('users').child(User.phone).set({name:this.state.name})
-      Alert.alert("SUCCESS","Đổi tên thành công")
-    }
-
+  change = async () => {
+    const user = firebaseService.auth().currentUser;
+    firebaseService.database().ref(`/users/${user.uid}`).update({
+      displayName: this.state.name,
+      phoneNumber: this.state.phone
+    })
+    firebaseService.auth().currentUser.updateProfile({
+      displayName: this.state.name,
+      phoneNumber: this.state.phone
+    })
+    Alert.alert("SUCCESS", "Thay đổi thông tin thành công")
   }
   Logout = () => {
-    firebase.auth().signOut().then(function() {
+    firebase.auth().signOut().then(function () {
       this.props.navigation.navigate('Auth')
     }).catch((error) => {
-       console.log(error.message)
+      console.log(error.message)
     });
   }
+
   render() {
+    console.log(this.state)
     return (
-      <View style={style.container}>
-        <Text style={{fontSize: 20}}>
-          {User.phone}
-        </Text>
-        <TextInput value={this.state.name}
-                   onChangeText={this.handleChange}
-                   style={{...style.input, marginTop:15}}
-        />
-        <TouchableOpacity onPress={this.changeName("name")}>
-          <Text style={style.btnText}>ĐỔI TÊN</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={{marginVertical:15}} onPress={this.Logout}>
-          <Text style={style.btnText}>Logout</Text>
-        </TouchableOpacity>
-      </View>
+      <Container>
+        <Content>
+          <Form>
+            <Item stackedLabel>
+              <Label>Tên</Label>
+              <Input value={this.state.name}
+                     onChangeText={(val)=>{
+                       this.setState({
+                         name: val
+                       })
+                     }}
+              />
+            </Item>
+            <Item stackedLabel last>
+              <Label>Phone</Label>
+              <Input value={this.state.phone}
+                     onChangeText={(val)=>{
+                       this.setState({
+                         phone: val
+                       })
+                     }}/>
+            </Item>
+          </Form>
+          <View style={{flex: 1, alignItems: "center", justifyContent: "center", paddingHorizontal: 50}}>
+            <Button info block style={{marginTop: 15}} onPress={this.change}><Text style={{color:"#fff"}}> Change </Text></Button>
+            <Button danger block style={{marginTop: 15}} onPress={this.Logout}><Text  style={{color:"#fff"}}> Logout </Text></Button>
+          </View>
+        </Content>
+      </Container>
+      // <View style={style.container}>
+      //   <Text style={{fontSize: 20}}>
+      //     {this.state.name}
+      //   </Text>
+      //   <TextInput value={this.state.name}
+      //              onChangeText={this.handleChange}
+      //              style={{...style.input, marginTop:15}}
+      //   />
+      //   <TouchableOpacity onPress={this.changeName("name")}>
+      //     <Text style={style.btnText}>ĐỔI TÊN</Text>
+      //   </TouchableOpacity>
+      //   <TouchableOpacity style={{marginVertical:15}} onPress={this.Logout}>
+      //     <Text style={style.btnText}>Logout</Text>
+      //   </TouchableOpacity>
+      // </View>
     )
   }
 }

@@ -77,7 +77,7 @@ const DrawerNav = createDrawerNavigator(
     },
   },
   {
-    initialRouteName : "Screen1",
+    initialRouteName : "Screen2",
     drawerPosition: "left",
   }
 )
