@@ -4,55 +4,39 @@ import {Alert, Text} from "react-native"
 import styles from "../styles/styles.scss";
 import firebase from "firebase";
 
-
-class LoginScreen extends React.Component {
+export default class SignupScreen extends React.Component {
   static navigationOptions = {
-    header: null,
+   title: "Đăng ký"
   }
-
   constructor(props) {
     super(props);
     this.state = {
       email: null,
-      password: null
+      password: null,
+      confirm_password: null
     };
   }
-
   SignUp = async (email, password) => {
     try {
       if (email == null || password == null) {
         Alert.alert("Thông báo", "Hãy điền tên đăng nhập và mật khẩu")
       } else {
-        await firebase.auth().createUserWithEmailAndPassword(email, password).catch((error) => {
-          if (error) {
-            Alert.alert("Đăng ký thất bại", `${error.message}`)
-          }
-        })
+        if (this.state.password !== this.state.confirm_password){
+          Alert.alert("\"Đăng ký thất bại", "Mật khẩu xác nhận không chính xác")
+        } else {
+          await firebase.auth().createUserWithEmailAndPassword(email, password).catch((error) => {
+            if (error) {
+              Alert.alert("Đăng ký thất bại", `${error.message}`)
+            }
+          })
+        }
+
       }
     } catch (error) {
       console.log(error.toString(error));
     }
   };
-  SignIn = async (email, password) => {
-    try {
-      if (email == null || password == null) {
-        Alert.alert("Thông báo", "Hãy điền tên đăng nhập và mật khẩu")
-      } else {
-        await firebase.auth().signInWithEmailAndPassword(email, password).catch((error) => {
-          Alert.alert("Đăng nhập thất bại", `${error.message}`)
-        });
-
-        // await firebase.auth().onAuthStateChanged((user) => {
-        //   console.log(user)
-        // })
-      }
-    } catch (error) {
-      console.log(error.toString(error));
-    }
-  };
-
   render() {
-    console.log("oke")
     return (
       <Container style={styles.container}>
         <Form style={{width: "80%",}}>
@@ -68,14 +52,14 @@ class LoginScreen extends React.Component {
                    onChangeText={password => this.setState({password})}
             />
           </Item>
-          <Button full rounded style={styles.btnLogin}
-                  onPress={() => this.SignIn(this.state.email, this.state.password)}>
-            <Text style={{color: "#fff"}}>Đăng nhập</Text>
-          </Button>
+          <Item floatingLabel>
+            <Label>Confirm Password</Label>
+            <Input autoCapitalize="none" autoCorrect={false} secureTextEntry={true}
+                   onChangeText={confirm_password => this.setState({confirm_password})}
+            />
+          </Item>
           <Button full rounded success style={styles.btnSignup}
-                  onPress={() => {
-                    this.props.navigation.navigate("SignUp")
-                  }}>
+                  onPress={() => this.SignUp(this.state.email, this.state.password)}>
             <Text style={{color: "#fff"}}>Đăng Ký</Text>
           </Button>
         </Form>
@@ -83,5 +67,3 @@ class LoginScreen extends React.Component {
     )
   }
 }
-
-export default LoginScreen

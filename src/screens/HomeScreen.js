@@ -15,7 +15,7 @@ export default class HomeScreen extends React.Component {
       users: []
     }
   }
-  componentWillMount() {
+  componentWillMount () {
     const user = firebaseService.auth().currentUser;
     let data = firebaseService.database().ref(`message/${user.uid}`);
     data.on('child_added', (val) => {
@@ -23,7 +23,7 @@ export default class HomeScreen extends React.Component {
       dbRef.on('child_added', (val) => {
         this.setState((prevState) => {
           return {
-            users: [...prevState.users, val.val()]
+            users: [...prevState.users,[ val.val(),{time:"1"}]]
           }
         })
       })
@@ -32,23 +32,23 @@ export default class HomeScreen extends React.Component {
   }
 
   renderItem = ({item}) => {
+    console.log(item[1])
     return (
-
       <ListItem
-        title={item.displayName}
+        title={item[0].displayName}
         subtitle={item.subtitle}
         leftAvatar={{
           source: item.avatar_url && {uri: item.avatar_url},
-          title: item.displayName.charAt(0),
+          title: item[0].displayName.charAt(0),
           showEditButton: true,
           size: "medium",
 
         }}
-        rightTitle={`ssss`}
-        rightSubtitle={'ddd'}
+        // rightTitle={`ssss`}
+        // rightSubtitle={'ddd'}
         bottomDivider
         onPress={() => {
-          this.props.navigation.navigate("Chat", item)
+          this.props.navigation.navigate("Chat", item[0])
         }}
       />
 
@@ -57,6 +57,7 @@ export default class HomeScreen extends React.Component {
   };
 
   render() {
+    console.log(this.state)
     return (
       <Container style={styles.container}>
         <Content style={{width: "100%"}}>

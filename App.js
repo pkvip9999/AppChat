@@ -8,6 +8,8 @@ import AuthLoadingScreen from "./src/screens/AuthLoadingScreen"
 import ChatScreen from "./src/screens/ChatScreen";
 import ProfileScreen from "./src/screens/ProfileScreen";
 import SignUpSuccess from "./src/screens/SignUpSuccess";
+import SearchScreen from "./src/screens/SearchScreen";
+import SignupScreen from "./src/screens/SignupScreen";
 import {Image, TouchableOpacity,View} from "react-native";
 // Implementation of HomeScreen, OtherScreen, SignInScreen, AuthLoadingScreen
 // goes here.
@@ -28,7 +30,7 @@ class NavigationDrawerStructure extends React.Component {
     );
   }
 }
-const AuthStack = createStackNavigator({Login: LoginScreen});
+const AuthStack = createStackNavigator({Login: LoginScreen, SignUp: SignupScreen});
 const Success = createStackNavigator({SignUpSuccess: SignUpSuccess});
 const AppStack = createStackNavigator({
   Home: {
@@ -46,7 +48,7 @@ const AppStack = createStackNavigator({
 });
 
 const Profile = createStackNavigator({
-  Second: {
+  Profile: {
     screen: ProfileScreen,
     navigationOptions: ({ navigation }) => ({
       title: 'Profile',
@@ -59,25 +61,44 @@ const Profile = createStackNavigator({
     }),
   },
 });
-
+const Search = createStackNavigator({
+  Search: {
+    screen: SearchScreen,
+    navigationOptions: ({ navigation }) => ({
+      title: 'Tìm kiếm',
+      headerLeft: <NavigationDrawerStructure navigationProps={navigation} />,
+      headerStyle: {
+        backgroundColor: '#FF9800',
+      },
+      headerTintColor: '#fff',
+    }),
+  },
+  Chat : ChatScreen
+});
 const DrawerNav = createDrawerNavigator(
   {
-    Screen1: {
+    Home: {
       screen: AppStack,
       navigationOptions: {
         drawerLabel: 'Trang chủ',
       },
     },
-
-    Screen2: {
+    Search: {
+      screen: Search,
+      navigationOptions: {
+        drawerLabel: 'Tìm kiếm',
+      },
+    },
+    Profile: {
       screen: Profile,
       navigationOptions: {
         drawerLabel: 'Thông tin cá nhân',
       },
     },
+
   },
   {
-    initialRouteName : "Screen2",
+    initialRouteName : "Home",
     drawerPosition: "left",
   }
 )

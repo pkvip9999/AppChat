@@ -11,31 +11,26 @@ export default class ProfileScreen extends React.Component {
     super(props)
     this.state = {
       name: "",
-      email: ""
+      phone: "",
+
     }
   }
 
   componentWillMount() {
     const user = firebaseService.auth().currentUser;
-    console.log(user)
-    this.setState({
-      name: user.displayName,
-      phone: user.phoneNumber
+    let dbRef = firebaseService.database().ref(`users`).orderByChild("uid").equalTo(user.uid);
+    dbRef.on('child_added', (val) => {
+      this.setState({
+        name: val.val().displayName,
+        phone: val.val().phoneNumber
+      })
     })
+
   }
 
-  handleChange = () => {
-    this.setState({
-      [key]: val
-    })
-  }
   change = async () => {
     const user = firebaseService.auth().currentUser;
     firebaseService.database().ref(`/users/${user.uid}`).update({
-      displayName: this.state.name,
-      phoneNumber: this.state.phone
-    })
-    firebaseService.auth().currentUser.updateProfile({
       displayName: this.state.name,
       phoneNumber: this.state.phone
     })
@@ -50,7 +45,6 @@ export default class ProfileScreen extends React.Component {
   }
 
   render() {
-    console.log(this.state)
     return (
       <Container>
         <Content>
@@ -81,21 +75,6 @@ export default class ProfileScreen extends React.Component {
           </View>
         </Content>
       </Container>
-      // <View style={style.container}>
-      //   <Text style={{fontSize: 20}}>
-      //     {this.state.name}
-      //   </Text>
-      //   <TextInput value={this.state.name}
-      //              onChangeText={this.handleChange}
-      //              style={{...style.input, marginTop:15}}
-      //   />
-      //   <TouchableOpacity onPress={this.changeName("name")}>
-      //     <Text style={style.btnText}>ĐỔI TÊN</Text>
-      //   </TouchableOpacity>
-      //   <TouchableOpacity style={{marginVertical:15}} onPress={this.Logout}>
-      //     <Text style={style.btnText}>Logout</Text>
-      //   </TouchableOpacity>
-      // </View>
     )
   }
 }

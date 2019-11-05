@@ -1,4 +1,5 @@
 import React from "react";
+import {convertTime} from "../helper";
 import {
   Text,
   TextInput,
@@ -59,17 +60,6 @@ export default class ChatScreen extends React.Component {
       [key]: val
     })
   }
-  convertTime = (time) => {
-    let d = new Date(time)
-    let c = new Date()
-    let result = (d.getHours() < 10 ? "0" : "") + d.getHours() + ":"
-    result += (d.getMinutes() < 10 ? "0" : "") + d.getMinutes()
-    if (c.getDay() !== d.getDay()) {
-      result = d.getDay() + " " + d.getMonth() + " " + result
-    }
-    return result
-
-  }
   sendMessage = async () => {
     if (this.state.textMessage.length > 0) {
       let user = firebaseService.auth().currentUser;
@@ -115,7 +105,7 @@ export default class ChatScreen extends React.Component {
           padding: 3,
           fontSize: 12,
         }}>
-          {this.convertTime(item.time)}
+          {convertTime(item.time)}
         </Text>
       </View>
     )
