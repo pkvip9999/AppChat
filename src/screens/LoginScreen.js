@@ -1,13 +1,13 @@
 import React from "react";
 import {Container, Item, Form, Input, Button, Label} from "native-base"
-import {Alert, Text} from "react-native"
+import {Alert, Text,View} from "react-native"
 import styles from "../styles/styles.scss";
 import firebase from "firebase";
 
 
 class LoginScreen extends React.Component {
   static navigationOptions = {
-    header: null,
+    title: "Đăng nhập"
   }
 
   constructor(props) {
@@ -20,7 +20,7 @@ class LoginScreen extends React.Component {
 
   SignUp = async (email, password) => {
     try {
-      if (email == null || password == null) {
+      if (email == null || password == null || email== "" || password=="") {
         Alert.alert("Thông báo", "Hãy điền tên đăng nhập và mật khẩu")
       } else {
         await firebase.auth().createUserWithEmailAndPassword(email, password).catch((error) => {
@@ -52,7 +52,6 @@ class LoginScreen extends React.Component {
   };
 
   render() {
-    console.log("oke")
     return (
       <Container style={styles.container}>
         <Form style={{width: "80%",}}>
@@ -68,6 +67,12 @@ class LoginScreen extends React.Component {
                    onChangeText={password => this.setState({password})}
             />
           </Item>
+          <View style={{marginVertical: 15}}>
+            <Text style={{color:"red"}}
+            onPress={() =>{
+              this.props.navigation.navigate("ForgetPass")
+            }}>Quên mật khẩu</Text>
+          </View>
           <Button full rounded style={styles.btnLogin}
                   onPress={() => this.SignIn(this.state.email, this.state.password)}>
             <Text style={{color: "#fff"}}>Đăng nhập</Text>

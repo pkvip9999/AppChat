@@ -29,7 +29,7 @@ export default class AuthLoadingScreen extends React.Component {
   // Render any loading content that you like here
   render() {
     return (
-      <View style={styles.container}>
+      <View style={{...styles.container,justifyContent:"center"}}>
         <ActivityIndicator size="large" color="#0000ff"/>
         <StatusBar barStyle="default" />
       </View>

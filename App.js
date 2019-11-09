@@ -10,6 +10,7 @@ import ProfileScreen from "./src/screens/ProfileScreen";
 import SignUpSuccess from "./src/screens/SignUpSuccess";
 import SearchScreen from "./src/screens/SearchScreen";
 import SignupScreen from "./src/screens/SignupScreen";
+import ForgetPass from "./src/screens/ForgetPass";
 import {Image, TouchableOpacity,View} from "react-native";
 // Implementation of HomeScreen, OtherScreen, SignInScreen, AuthLoadingScreen
 // goes here.
@@ -30,7 +31,7 @@ class NavigationDrawerStructure extends React.Component {
     );
   }
 }
-const AuthStack = createStackNavigator({Login: LoginScreen, SignUp: SignupScreen});
+const AuthStack = createStackNavigator({Login: LoginScreen, SignUp: SignupScreen, ForgetPass: ForgetPass});
 const Success = createStackNavigator({SignUpSuccess: SignUpSuccess});
 const AppStack = createStackNavigator({
   Home: {
@@ -102,15 +103,13 @@ const DrawerNav = createDrawerNavigator(
     drawerPosition: "left",
   }
 )
-
-
 export default createAppContainer(
   createSwitchNavigator(
     {
       AuthLoading: AuthLoadingScreen,
+      Auth: AuthStack,
       SignUpSuccess: Success,
       App: DrawerNav,
-      Auth: AuthStack,
     },
     {
       initialRouteName: 'AuthLoading',

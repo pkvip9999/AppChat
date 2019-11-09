@@ -18,7 +18,7 @@ export default class SignupScreen extends React.Component {
   }
   SignUp = async (email, password) => {
     try {
-      if (email == null || password == null) {
+      if (email == null || password == null || email== "" || password=="") {
         Alert.alert("Thông báo", "Hãy điền tên đăng nhập và mật khẩu")
       } else {
         if (this.state.password !== this.state.confirm_password){
